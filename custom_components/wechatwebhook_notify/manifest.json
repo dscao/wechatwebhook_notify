@@ -1,0 +1,14 @@
+{
+  "domain": "wechatwebhook_notify",
+  "name": "Wechatwebhook Notify",
+  "config_flow": false,
+  "documentation": "https://github.com/dscao/wechatwebhook_notify/",
+  "issue_tracker": "https://github.com/dscao/wechatwebhook_notify/issue",
+  "requirements": [
+  ],
+  "dependencies": [],
+  "codeowners": [
+    "@dscao"
+  ],
+  "version": "2023.10.10"
+}
