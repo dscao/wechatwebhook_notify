@@ -15,7 +15,7 @@ from homeassistant.components.notify import (
     BaseNotificationService,
 )
 import homeassistant.helpers.config_validation as cv
-from homeassistant.const import CONF_RESOURCE
+from homeassistant.const import CONF_RESOURCE, CONF_TOKEN
 
 _LOGGER = logging.getLogger(__name__)
 DIVIDER = "———————————"
@@ -23,6 +23,7 @@ DIVIDER = "———————————"
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required("touser"): cv.string,
     vol.Required(CONF_RESOURCE): cv.url,
+    vol.Required(CONF_TOKEN): cv.string,
     vol.Optional("isRoom", default = 'false'): cv.boolean,    
     vol.Optional("resource_username", default = ""): cv.string,
     vol.Optional("resource_password", default = ""): cv.string,
@@ -35,16 +36,18 @@ def get_service(hass, config, discovery_info=None):
         config.get("touser"),
         config.get("isRoom"),
         config.get(CONF_RESOURCE),
+        config.get(CONF_TOKEN),
         config.get("resource_username"),
         config.get("resource_password"),
     )
 
 
 class WeChatNotificationService(BaseNotificationService):
-    def __init__(self, hass, touser, isRoom, wechatbaseurl, resource_username, resource_password):
+    def __init__(self, hass, touser, isRoom, wechatbaseurl, token, resource_username, resource_password):
         self._touser = touser
         self._isroom = isRoom
         self._wechatbaseurl = wechatbaseurl
+        self._token = token
 
         if resource_username and resource_password:
             self._header = {"Authorization": "Basic {}".format(self.getAuth(resource_username,resource_password)), "Content-Type": "application/json"} 
@@ -59,7 +62,7 @@ class WeChatNotificationService(BaseNotificationService):
 
     def send_message(self, message="", **kwargs):
         send_url = (
-            self._wechatbaseurl + "/webhook/msg"
+            self._wechatbaseurl + "/webhook/msg?token=" + self._token
         )
         title = kwargs.get(ATTR_TITLE)
 
