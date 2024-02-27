@@ -12,6 +12,7 @@ Thanks to: https://github.com/danni-cool/docker-wechatbot-webhook
     touser: '大胜' #默认发送对象昵称 
     isRoom: false  #默认发送对象是否是群 
     resource: 'http://192.168.8.2:3001'   #wechatbot-webhook服务器url
+    token: 'abcdefg123'
 ```
 
 调用：
